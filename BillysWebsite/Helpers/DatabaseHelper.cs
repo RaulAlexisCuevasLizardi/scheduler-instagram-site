@@ -1,4 +1,6 @@
-﻿using System.Data.SqlClient;
+﻿
+
+using System.Data.SqlClient;
 
 namespace BillysWebsite.Helpers
 {
@@ -8,7 +10,7 @@ namespace BillysWebsite.Helpers
 
         public void OpenConection()
         {
-            conn = new SqlConnection("Data Source=DESKTOP-FCNCI3B;Initial Catalog=BillysWebsite;Integrated Security=True");
+            conn = new SqlConnection("Data Source=DESKTOP-FCNCI3B;Initial Catalog=BillysWebsiteDB;Integrated Security=True");
             conn.Open();
         }
 

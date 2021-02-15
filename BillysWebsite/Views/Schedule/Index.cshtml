@@ -1,10 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
     @*
         for more info: https://fullcalendar.io/docs
         for paypal: https://developer.paypal.com/docs/checkout/integrate/#7-go-live
+        
     *@
+    ViewData["Title"] = "Index";
+    List<Appointment> appointments = (List<Appointment>)ViewData["appointments"];
+    string eventsJson = (string)ViewData["eventsJson"];
 }
 
 <h1 class="jumbotron">Schedule</h1>
@@ -16,6 +19,7 @@
 <div id='calendar'>
 </div>
 <script>
+    var events = @Html.Raw(eventsJson);
     var morningString = 'T10:00:00';
     var afternoonString = 'T15:00:00';
     var businessDays = [0, 3, 4, 5, 6];
@@ -49,7 +53,7 @@
                 endTime: '19:00', // an end time (7pm in this example)
             },
             select: function (arg) {
-
+                debugger;
                 var businessHours = businessDays.includes(arg.start.getDay());
                 var dateIsInPast = arg.start <= today;
                 if (dateIsInPast) {
@@ -64,28 +68,11 @@
                 }
                 if (businessHours && !dateIsInPast) {
                     window.open('@Url.Action("MakeAppointment", "Schedule")' + '?date=' + formatDate(arg.start));
-                    //var title = prompt('Event Title:');
-                    //if (title) {
-                    //    var time = prompt('Morning or afternoon session?');
-                    //    if (time == 'Morning') {
-                    //        calendar.addEvent({
-                    //            title: title,
-                    //            start: arg.startStr + morningString,
-                    //            end: arg.end
-                    //        });
-                    //    }
-                    //    else {
-                    //        calendar.addEvent({
-                    //            title: title,
-                    //            start: arg.startStr + afternoonString,
-                    //            end: arg.end
-                    //        });
-                    //    }
-                    //}
                 }
                 calendar.unselect();
             },
             dateClick: function (info) {
+                debugger;
                 //more info on click event: https://fullcalendar.io/docs/dateClick
                 info.jsEvent.preventDefault();
                 //alert('Clicked on: ' + info.dateStr);
@@ -94,7 +81,8 @@
                 // change the day's background color just for fun
                 //info.dayEl.style.backgroundColor = 'red';
             },
-            events: [
+            events: events
+            //events: [
                 //more info on events: https://fullcalendar.io/docs/event-model
                 //{ // this object will be "parsed" into an Event Object
                 //    title: 'The Title', // a property!
@@ -110,7 +98,7 @@
                 //    title: 'The Title', // a property!
                 //    start: '2020-07-16T10:30:00',
                 //}
-            ]
+            //]
         });
         calendar.render();
     });

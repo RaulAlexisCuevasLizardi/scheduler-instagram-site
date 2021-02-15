@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\17876\\Documents\\Workplace\\Projects\\BillysWebsite\\BillysWebsite\\BillysWebsite.csproj": {}
+    "C:\\Users\\17876\\Documents\\Workplace\\Projects\\scheduler-instagram-site\\BillysWebsite\\BillysWebsite.csproj": {}
   },
   "projects": {
-    "C:\\Users\\17876\\Documents\\Workplace\\Projects\\BillysWebsite\\BillysWebsite\\BillysWebsite.csproj": {
+    "C:\\Users\\17876\\Documents\\Workplace\\Projects\\scheduler-instagram-site\\BillysWebsite\\BillysWebsite.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\BillysWebsite\\BillysWebsite\\BillysWebsite.csproj",
+        "projectUniqueName": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\scheduler-instagram-site\\BillysWebsite\\BillysWebsite.csproj",
         "projectName": "BillysWebsite",
-        "projectPath": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\BillysWebsite\\BillysWebsite\\BillysWebsite.csproj",
+        "projectPath": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\scheduler-instagram-site\\BillysWebsite\\BillysWebsite.csproj",
         "packagesPath": "C:\\Users\\17876\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\BillysWebsite\\BillysWebsite\\obj\\",
+        "outputPath": "C:\\Users\\17876\\Documents\\Workplace\\Projects\\scheduler-instagram-site\\BillysWebsite\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -44,6 +44,14 @@
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[3.1.3, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
