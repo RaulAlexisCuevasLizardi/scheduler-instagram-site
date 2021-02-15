@@ -1,0 +1,40 @@
+﻿
+@{
+    DateTime date = (DateTime)ViewData["date"];
+    ViewData["Title"] = "AddAppointment";
+}
+
+<div class="jumbotron">
+    <h1>Make an appointment</h1>
+    <p>Enter some information about your appointment on @date.ToString("ddd d") of @date.ToString("MMMM") @date.ToString("yyyy"):</p>
+</div>
+<div class="container">
+    <div class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
+        <form id="myForm" action="@Url.Action("MakeAppointment", "Schedule")" method="post" class="container">
+            <div class="form-row mb-4">
+                <label for="name">Your name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-row mb-4">
+                <label for="description">Basic decription of tattoo:</label>
+                <textarea class="form-control" rows="5" id="description" name="description" maxlength="575" required></textarea>
+            </div>
+            <div class="form-row float-left mb-4">
+                <div class="form-check mr-4">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="timeOfDay" value="0">Morning (10:00AM)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="timeOfDay" value="1">Afternoon (3:00PM)
+                    </label>
+                </div>
+            </div>
+            <div class="form-row float-right mb-4">
+                <button type="submit" id="btnSubmit" class="btn btn btn-primary">Schedule</button>
+            </div>
+            <input type="hidden" id="startDate" name="startDate" value="@date"/>
+        </form>
+    </div>
+</div>
