@@ -20,25 +20,41 @@ namespace BillysWebsite.Controllers
     {
         public IActionResult Index()
         {
-            List<Appointment> appointments = Functions.GetAppointments();
+            List<DateTime> fullScheduleDays = null;
+            List<Appointment> appointments = Functions.GetAppointments(0);
             List<Event> events = null;
             if(appointments != null && appointments.Count > 0)
             {
-                foreach (Appointment appointment in appointments)
+                for(int i = 0; i < appointments.Count; i++)
                 {
                     if (events == null)
                         events = new List<Event>();
                     Event tempEvent = new Event();
                     tempEvent.allDay = false;
-                    tempEvent.start = appointment.StartDate;
-                    tempEvent.end = appointment.EndDate;
-                    tempEvent.id = appointment.AppointmentPK;
-                    tempEvent.title = appointment.Title;
-                    tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointment.AppointmentPK});
+                    tempEvent.start = appointments[i].StartDate;
+                    tempEvent.end = appointments[i].EndDate;
+                    tempEvent.id = appointments[i].AppointmentPK;
+                    tempEvent.title = appointments[i].Title;
+                    tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointments[i].AppointmentPK});
+                    if(i > 0)
+                    {
+                        if (appointments[i-1].StartDate.Month == appointments[i].StartDate.Month ||
+                               appointments[i-1].StartDate.Day == appointments[i].StartDate.Day ||
+                               appointments[i-1].StartDate.Year == appointments[i].StartDate.Year)
+                        {
+                            if (fullScheduleDays == null)
+                                fullScheduleDays = new List<DateTime>();
+                            fullScheduleDays.Add(new DateTime(appointments[i].StartDate.Year, appointments[i].StartDate.Month, appointments[i].StartDate.Day));
+
+                        }
+                    }
+
                     events.Add(tempEvent);
                 }
             }
             string eventsJson = JsonSerializer.Serialize(events, typeof(List<Event>));
+            string fullScheduleDaysJson = JsonSerializer.Serialize(fullScheduleDays, typeof(List<DateTime>));
+            ViewData["fullScheduleDaysJson"] = fullScheduleDaysJson;
             ViewData["appointments"] = appointments;
             ViewData["eventsJson"] = eventsJson;
             return View();
@@ -65,15 +81,23 @@ namespace BillysWebsite.Controllers
                 startDate = startDate.Date + time;
             }
             DateTime endDate = startDate.AddHours(4);
+            //Get appointments and check if appointment already exists
+            List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
+            if(appointments != null && appointments.Count > 0)
+            {
+                //We already have an appointment at that time 
+                //Return a failure message
+                ViewData["message"] = "An appointment at that time already exists.";
+            }
             if(Functions.AddAppointent(name, description, startDate, endDate) == 1)
             {
-                //return success
+                ViewData["message"] = "Appointment has been successfully created.";
             }
             else
             {
-                //return failure
+                ViewData["message"] = "Error: Could not create appointment.";
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "ViewAppointment");
         }
 
         [HttpGet]

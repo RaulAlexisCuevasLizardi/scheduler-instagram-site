@@ -28,7 +28,7 @@ namespace BillysWebsite.Helpers
             return success;
         }
 
-        public static List<Appointment> GetAppointments(int appointmentPK = 0)
+        public static List<Appointment> GetAppointments(int appointmentPK = 0, DateTime? startDate = null, DateTime? endDate = null)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
             dbHelper.OpenConection();
@@ -44,11 +44,42 @@ namespace BillysWebsite.Helpers
             if(appointmentPK != 0)
             {
                 if (whereString == null)
+                {
                     whereString = "WHERE ";
+                }
+                else
+                {
+                    whereString += "AND ";
+                }
                 whereString += "AppointmentPK = " + appointmentPK + " ";
+            }
+            if(startDate != null)
+            {
+                if (whereString == null)
+                {
+                    whereString = "WHERE ";
+                }
+                else
+                {
+                    whereString += "AND ";
+                }
+                whereString += "startDate = '" + startDate + "' ";
+            }
+            if (endDate != null)
+            {
+                if (whereString == null)
+                {
+                    whereString = "WHERE ";
+                }
+                else
+                {
+                    whereString += "AND ";
+                }
+                whereString += "endDate = '" + endDate + "' ";
             }
             if (whereString != null)
                 query += whereString;
+            query += " ORDER BY startDate";
             using (SqlDataReader dbReader = dbHelper.DataReader(query))
             {
                 while (dbReader.Read())

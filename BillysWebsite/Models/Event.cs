@@ -20,5 +20,6 @@ namespace BillysWebsite.Models
         public bool startEditable { get; set; }
         public bool durationEditable { get; set; }
         public bool resourceEditable { get; set; }
+        public string backgroundColor { get; set; }
     }
 }
