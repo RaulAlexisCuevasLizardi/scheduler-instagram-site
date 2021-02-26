@@ -11,32 +11,58 @@
 <div class="container">
     <div class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
         <form id="myForm" action="@Url.Action("MakeAppointment", "Schedule")" method="post" class="container">
+            <!--Full name-->
             <div class="form-row mb-4">
-                <label for="name">Your name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>            
-            <div class="form-row mb-4">
-                <label for="phoneNumber">Phone number:</label>
-                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
-            </div>
-            <div class="form-row mb-4">
-                <label for="description">Basic decription of tattoo:</label>
-                <textarea class="form-control" rows="5" id="description" name="description" maxlength="575" required></textarea>
-            </div>
-            <div class="form-row float-left mb-4">
-                <div class="form-check mr-4">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="timeOfDay" value="0">Morning (10:00AM)
-                    </label>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="firstName">First name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="lastName">Last name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="dateOfBirth">Date of birth:</label>
+                    <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                </div>
+            </div>          
+            <!--Contact info-->
+            <div class="form-row mb-4">
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="licenseNumber">License number:</label>
+                    <input type="text" class="form-control" id="licenseNumber" name="licenseNumber">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="phoneNumber">Phone number:</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="email">Email:</label>
+                    <input type="text" class="form-control" id="email" name="email">
+                </div>
+            </div>
+            <!--Description box-->
+            <div class="form-row mb-4">
+                <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                    <label for="description">Basic decription of tattoo:</label>
+                    <textarea class="form-control" rows="5" id="description" name="description" maxlength="575" required></textarea>
+                </div>
+            </div>
+            <!--Checkboxes and submit button-->
+            <div class="form-row mb-4">
                 <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="timeOfDay" value="1">Afternoon (3:00PM)
-                    </label>
+                    <input id="morningCheck" type="radio" class="form-check-input" name="timeOfDay" value="0">
+                    <label class="form-check-label" for="morningCheck">10:00AM</label>
+                </div>
+                <div class="form-check ml-4">
+                    <input id="afternoonCheck" type="radio" class="form-check-input" name="timeOfDay" value="1">
+                    <label class="form-check-label" for="afternoonCheck">3:00PM</label>
                 </div>
             </div>
-            <div class="form-row float-right mb-4">
-                <button type="submit" id="btnSubmit" class="btn btn btn-primary">Schedule</button>
+            <div class="form-row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <button type="submit" id="btnSubmit" class="btn btn btn-primary float-right">Schedule</button>
+                </div>
             </div>
             <input type="hidden" id="startDate" name="startDate" value="@date" />
         </form>

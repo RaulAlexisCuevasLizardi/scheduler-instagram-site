@@ -16,6 +16,9 @@
     <p class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
         Click on any date that is available to reserve a meeting with the tattoo artist.
     </p>
+    <p class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
+        ***TODO: add legend to calendar***
+    </p>
 </div>
 <div id='calendar'>
 </div>
@@ -64,7 +67,27 @@
             selectable: true,
             dayCellDidMount: function (arg) {
                 var element = arg.el;
-                element.bgColor = "red"; //IT WOOOOOOOOOOOOOOOOOOOOOOOOOOOORKS
+                if (arg.date >= today) {
+                    if (fullScheduleDays != null) {
+                        for (var i = 0; i < fullScheduleDays.length; i++) {
+                            var currDate = new Date(fullScheduleDays[i]);
+                            var fullDateDay = currDate.getDate();
+                            var fullDateMonth = currDate.getMonth();
+                            var fullDateYear = currDate.getYear();
+                            var currDateDay = arg.date.getDate();
+                            var currDateMonth = arg.date.getMonth();
+                            var currDateYear = arg.date.getYear();
+                            if (fullDateDay == currDateDay &&
+                                fullDateMonth == currDateMonth &&
+                                fullDateYear == currDateYear) {
+                                element.bgColor = "red";
+                            }
+                        }
+                    }
+                }
+                else {
+                    element.bgColor = "#4d3e15";
+                }
             },
             businessHours: {
                 // days of week. an array of zero-based day of week integers (0=Sunday)
@@ -118,20 +141,6 @@
                 //    start: '2020-07-16T10:30:00',
                 //}
             //]
-        });
-
-        $('#calendar').fullCalendar({
-            //all callbacks go here
-            dayRender: function (date, element, view) {
-                for (var i = 0; i < fullScheduleDays.length; i++) {
-                    var currDate = new Date(fullScheduleDays[i]);
-                    var fullDateDay = currDate.getDate();
-                    var currDateMonth = date._d.getDate();
-                    if (fullDateDay == currDateMonth) {
-                        element.css("background-color", "red");
-                    }
-                }
-            }
         });
 
         calendar.render();

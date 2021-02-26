@@ -7,9 +7,17 @@
 <div class="jumbotron">
     <div class="container">
         <h1>@appointment.StartDate.ToString("ddd d MMM yyyy")</h1>
-        <h1>Appointment for: <small>@appointment.Title</small></h1>
-        <h3>From: <small class="bg-primary">@appointment.StartDate.ToString("h:mm:ss tt")</small> to <small class="bg-primary">@appointment.EndDate.ToString("h:mm:ss tt")</small></h3>
-        <h4>Description: <small>@appointment.Description</small></h4>
+        <h1>Appointment for: 
+            <small>@appointment.Title</small>
+        </h1>
+        <h3>From: 
+            <small class="bg-primary">@appointment.StartDate.ToString("h:mm:ss tt")</small>
+            to 
+            <small class="bg-primary">@appointment.EndDate.ToString("h:mm:ss tt")</small>
+        </h3>
+        <h4>Description: 
+            <small>@appointment.Description</small>
+        </h4>
     </div>
 </div>
 

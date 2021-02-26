@@ -38,14 +38,17 @@ namespace BillysWebsite.Controllers
                     tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointments[i].AppointmentPK});
                     if(i > 0)
                     {
-                        if (appointments[i-1].StartDate.Month == appointments[i].StartDate.Month ||
-                               appointments[i-1].StartDate.Day == appointments[i].StartDate.Day ||
+                        DateTime tomorrowDate = DateTime.Today.AddDays(1);
+                        if(appointments[i].StartDate >= tomorrowDate)
+                        if (appointments[i-1].StartDate.Month == appointments[i].StartDate.Month &&
+                               appointments[i-1].StartDate.Day == appointments[i].StartDate.Day &&
                                appointments[i-1].StartDate.Year == appointments[i].StartDate.Year)
                         {
                             if (fullScheduleDays == null)
                                 fullScheduleDays = new List<DateTime>();
-                            fullScheduleDays.Add(new DateTime(appointments[i].StartDate.Year, appointments[i].StartDate.Month, appointments[i].StartDate.Day));
-
+                            fullScheduleDays.Add(new DateTime(appointments[i].StartDate.Year,
+                                                              appointments[i].StartDate.Month,
+                                                              appointments[i].StartDate.Day));
                         }
                     }
 

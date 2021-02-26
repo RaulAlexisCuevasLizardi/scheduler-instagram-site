@@ -7,9 +7,15 @@ TODO LIST:
 preferences to appointment calendar
 3) Fix calendar arrow buttons
 4) Make days where no more events can 
-be created show a different color
-5) Create categories for events consultation
-and session
+be created show a different color *DONE*
+5) Create categories for events (consultation
+and session) for the Make Appointment form
+6) Add birth date, last name, phone number,
+license number and email to the Make Appointment form *DONE*
+7) Add birth date, last name, phone number,
+license number and email to the database 
+8) Add legend to calendar
+9) Add picture upload for the Make Appointment form
 
 Comments from billy:
 - I think q las consultas serian de 9 a 10 
