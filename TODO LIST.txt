@@ -1,0 +1,21 @@
+TODO LIST:
+1) Administrator page
+  a) Login
+  b) Manage appointments section
+  c) Schedule management
+2) Integrate administrator
+preferences to appointment calendar
+3) Fix calendar arrow buttons
+4) Make days where no more events can 
+be created show a different color
+5) Create categories for events consultation
+and session
+
+Comments from billy:
+- I think q las consultas serian de 9 a 10 
+Sessions 2 per day 10-3 y 4-8 y una opcion d full day
+- Sessions d 4 horas
+- Lo q digo es q las personas pdan peer en el calendar la hora que estan requesting 
+Consultas it would specify 9-10 y las secciones am y pm cn las horas tambn
+- So they know a q hora tienen q estar ahi
+Cause business hours would be 9-8 no specifications

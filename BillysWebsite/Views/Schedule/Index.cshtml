@@ -62,6 +62,10 @@
             initialView: 'dayGridMonth',
             themeSystem: 'bootstrap',
             selectable: true,
+            dayCellDidMount: function (arg) {
+                var element = arg.el;
+                element.bgColor = "red"; //IT WOOOOOOOOOOOOOOOOOOOOOOOOOOOORKS
+            },
             businessHours: {
                 // days of week. an array of zero-based day of week integers (0=Sunday)
                 daysOfWeek: businessDays, // Thursday - Sunday
