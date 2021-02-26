@@ -4,10 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BillysWebsite</title>
+    @*
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/full-calendar/main.css" />
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/full-calendar/main.js"></script>
+        <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/moment.min.js'></script>
+        <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery.min.js'></script>
+        <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery-ui.min.js'></script>
+        <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.js'></script>
+    *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/full-calendar/main.css" />
-
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src='https://dl.dropboxusercontent.com/s/93dskqt37q1caxr/fullcalendar.min.js'></script>
+    <link rel="stylesheet" href="https://dl.dropboxusercontent.com/s/y4enc3buyzz2m3a/fullcalendar.css" />
+    @RenderSection("Scripts", required: false)
 </head>
 <body>
     <header>
@@ -42,14 +54,5 @@
     </footer>
     @*<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
         <script>paypal.Buttons().render('body');</script>*@
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/full-calendar/main.js"></script>
-    <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/moment.min.js'></script>
-    <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery.min.js'></script>
-    <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery-ui.min.js'></script>
-    <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.js'></script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

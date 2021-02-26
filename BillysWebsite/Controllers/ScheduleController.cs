@@ -31,6 +31,7 @@ namespace BillysWebsite.Controllers
                         events = new List<Event>();
                     Event tempEvent = new Event();
                     tempEvent.allDay = false;
+                    //tempEvent.display = "background";
                     tempEvent.start = appointments[i].StartDate;
                     tempEvent.end = appointments[i].EndDate;
                     tempEvent.id = appointments[i].AppointmentPK;

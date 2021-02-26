@@ -56,81 +56,22 @@
         return false;
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            themeSystem: 'bootstrap',
-            selectable: true,
-            businessHours: {
-                // days of week. an array of zero-based day of week integers (0=Sunday)
-                daysOfWeek: businessDays, // Thursday - Sunday
-                startTime: '10:00', // a start time (10am in this example)
-                endTime: '19:00', // an end time (7pm in this example)
-            },
-            select: function (arg) {
-                var startDay = arg.start.getDay();
-                var businessHours = includes(businessDays, startDay);
-                var dateIsInPast = arg.start <= today;
-                if (dateIsInPast) {
-                    alert("Please choose a date after " + today);
-                    calendar.unselect();
-                    return;
-                }
-                if (!businessHours) {
-                    alert("The chosen date is not in the tattoo artist's business hours.");
-                    calendar.unselect();
-                    return;
-                }
-                if (businessHours && !dateIsInPast) {
-                    window.open('@Url.Action("MakeAppointment", "Schedule")' + '?date=' + formatDate(arg.start));
-                }
-                calendar.unselect();
-            },
-            dateClick: function (info) {
-                //more info on click event: https://fullcalendar.io/docs/dateClick
-                info.jsEvent.preventDefault();
-                //alert('Clicked on: ' + info.dateStr);
-                //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-                //alert('Current view: ' + info.view.type);
-                // change the day's background color just for fun
-                //info.dayEl.style.backgroundColor = 'red';
-            },
-            events: events
-            //events: [
-                //more info on events: https://fullcalendar.io/docs/event-model
-                //{ // this object will be "parsed" into an Event Object
-                //    title: 'The Title', // a property!
-                //    start: '2020-07-15T10:30:00',
-                //    end: '2020-07-15T11:30:00',
-                //},
-                //{ // this object will be "parsed" into an Event Object
-                //    title: 'The Title', // a property!
-                //    start: '2020-07-15T12:30:00',
-                //    end: '2020-07-15T13:30:00',
-                //},
-                //{ // this object will be "parsed" into an Event Object
-                //    title: 'The Title', // a property!
-                //    start: '2020-07-16T10:30:00',
-                //}
-            //]
-        });
 
-        $('#calendar').fullCalendar({
-            //all callbacks go here
-            dayRender: function (date, element, view) {
-                for (var i = 0; i < fullScheduleDays.length; i++) {
-                    var currDate = new Date(fullScheduleDays[i]);
-                    var fullDateDay = currDate.getDate();
-                    var currDateMonth = date._d.getDate();
-                    if (fullDateDay == currDateMonth) {
-                        element.css("background-color", "red");
-                    }
-                }
-            }
-        });
 
-        calendar.render();
+    var $calendar = $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,basicWeek,basicDay'
+        },
+
+        defaultView: 'month',
+
+        dayRender: function (date, cell) {
+            console.log(date);
+            console.log(cell);
+                cell.css("background-color", "red");
+        }
     });
 
 </script>
