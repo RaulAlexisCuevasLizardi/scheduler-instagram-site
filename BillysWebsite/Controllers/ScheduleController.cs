@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 using Contentful.Core.Models;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BillysWebsite.Controllers
 {
@@ -22,6 +23,11 @@ namespace BillysWebsite.Controllers
     }
     public class ScheduleController : Controller
     {
+        private IWebHostEnvironment _hostingEnvironment;
+        public ScheduleController(IWebHostEnvironment environment)
+        {
+            _hostingEnvironment = environment;
+        }
         public IActionResult Index()
         {
             List<DateTime> fullScheduleDays = null;
@@ -90,7 +96,12 @@ namespace BillysWebsite.Controllers
             string imageReferenceUpload = collection["imageReferenceUpload"];
             string timeOfDay = collection["timeOfDay"];
             string startDate = collection["startDate"];
-            //FormFile files = 
+            IFormFile file = collection.Files.GetFile("imageReferenceUpload");
+            using (var fileStream = new FileStream(Path.Combine(_hostingEnvironment.WebRootPath + "/Uploads", file.FileName), FileMode.Create))
+            {
+                file.CopyToAsync(fileStream);
+            }
+
             //if (timeOfDay == TIME_OF_DAY.MORNING)
             //{
             //    TimeSpan time = new TimeSpan(10, 0, 0);
