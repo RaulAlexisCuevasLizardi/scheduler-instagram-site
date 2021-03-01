@@ -1,61 +1,94 @@
 ﻿
 @{
+    DateTime maxValidDate = DateTime.Now.AddYears(-18); //Max valid date is 18 years ago
+    string maxValidDateString = maxValidDate.ToString("yyyy-MM-dd");
+    DateTime minValidDate = DateTime.Now.AddYears(-70);
+    string minValidDateString = minValidDate.ToString("yyyy-MM-dd");
     DateTime date = (DateTime)ViewData["date"];
     ViewData["Title"] = "AddAppointment";
 }
 
-    <div class="jumbotron">
-        <h1>Make an appointment</h1>
-        <div>Enter information about your appointment on <span class="bg-primary">@date.ToString("ddd d") of @date.ToString("MMMM") @date.ToString("yyyy"):</span></div>
+<div class="jumbotron">
+    <h1>Make an appointment</h1>
+    <div>
+        Enter information about your appointment on
+        <span class="bg-primary">
+            @date.ToString("ddd d") of @date.ToString("MMMM") @date.ToString("yyyy"):
+        </span>
     </div>
+</div>
 <div class="container">
     <div class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
-        <form id="myForm" action="@Url.Action("MakeAppointment", "Schedule")" method="post" class="container">
+        @using (Html.BeginForm("MakeAppointment", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <!--form id="myForm" action="@Url.Action("MakeAppointment", "Schedule")" method="post" class="container">-->
             <!--Full name-->
             <div class="form-row mb-4">
                 <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
                     <label for="firstName">First name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required
+                           autocomplete="on" autofocus minlength="2" maxlength="20"
+                           pattern="[a-zA-Z]+" title="First name">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
                     <label for="lastName">Last name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required
+                           autocomplete="on" autofocus minlength="2" maxlength="20"
+                           pattern="[a-zA-Z]+" title="Last name">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
                     <label for="dateOfBirth">Date of birth:</label>
-                    <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                    <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth"
+                           max="@maxValidDateString" min="@minValidDateString"
+                           title="Date of birth - Must be 18 or older" required>
                 </div>
-            </div>          
+            </div>
             <!--Contact info-->
             <div class="form-row mb-4">
                 <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
-                    <label for="licenseNumber">License number:</label>
-                    <input type="text" class="form-control" id="licenseNumber" name="licenseNumber">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
                     <label for="phoneNumber">Phone number:</label>
-                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+                           title="Phone number - 787-123-1234" required>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
                     <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="email" name="email"
+                           title="Email" required>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 mb-4">
+                    <label for="licenseNumber">License number:</label>
+                    <input type="number" class="form-control" id="licenseNumber"
+                           name="licenseNumber" step="any" required>
+                </div>
+            </div>
+            <!--Reference image-->
+            <div class="form-row mb-4">
+                <div class="form-control-file col-lg-3 col-md-3 col-sm-3">
+                    <label for="imageReferenceUpload">Image for reference:</label>
+                    <input type="file" class="form-control-file" id="imageReferenceUpload"
+                           name="imageReferenceUpload" accept="image/*" capture="environment"
+                           required>
+                </div>
+                <div class="form-control-file col-lg-9 col-md-9 col-sm-9">
+                    <img id="referenceImage" class="img-fluid img-thumbnail rounded" src="#" alt="Reference image" title="Reference image" style="display:none;" />
                 </div>
             </div>
             <!--Description box-->
             <div class="form-row mb-4">
                 <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
                     <label for="description">Basic decription of tattoo:</label>
-                    <textarea class="form-control" rows="5" id="description" name="description" maxlength="575" required></textarea>
+                    <textarea class="form-control" rows="5" id="description" name="description"
+                              maxlength="575" required></textarea>
                 </div>
             </div>
             <!--Checkboxes and submit button-->
             <div class="form-row mb-4">
                 <div class="form-check">
-                    <input id="morningCheck" type="radio" class="form-check-input" name="timeOfDay" value="0">
+                    <input id="morningCheck" type="radio" class="form-check-input" name="timeOfDay" value="0" required>
                     <label class="form-check-label" for="morningCheck">10:00AM</label>
                 </div>
                 <div class="form-check ml-4">
-                    <input id="afternoonCheck" type="radio" class="form-check-input" name="timeOfDay" value="1">
+                    <input id="afternoonCheck" type="radio" class="form-check-input" name="timeOfDay" value="1" required>
                     <label class="form-check-label" for="afternoonCheck">3:00PM</label>
                 </div>
             </div>
@@ -65,6 +98,11 @@
                 </div>
             </div>
             <input type="hidden" id="startDate" name="startDate" value="@date" />
-        </form>
+            <!--</form>-->
+        }
     </div>
 </div>
+
+@section scripts{
+    <script src="~/js/MakeAppointment.js"></script>
+}

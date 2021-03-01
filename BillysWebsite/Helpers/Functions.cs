@@ -35,13 +35,18 @@ namespace BillysWebsite.Helpers
             List<Appointment> appointments = null;
             string whereString = null;
             string query = useString +
-                           "SELECT[AppointmentPK] " +
-                           ",[Title] " +
-                           ",[Description] " +
-                           ",[StartDate] " +
-                           ",[EndDate] " +
-                           "FROM[dbo].[Appointment] ";
-            if(appointmentPK != 0)
+                            "SELECT[AppointmentPK] " +
+                            ",[Description] " +
+                            ",[StartDate] " +
+                            ",[EndDate] " +
+                            ",[FirstName] " +
+                            ",[LastName] " +
+                            ",[DateOfBirth] " +
+                            ",[PhoneNumber] " +
+                            ",[Email] " +
+                            ",[ReferenceImagePath] " +
+                            "FROM [dbo].[Appointment] ";
+            if (appointmentPK != 0)
             {
                 if (whereString == null)
                 {
@@ -86,14 +91,20 @@ namespace BillysWebsite.Helpers
                 {
                     if (dbReader.HasRows)
                     {
+                        int i = 0;
                         if (appointments == null)
                             appointments = new List<Appointment>();
                         Appointment tempAppointment = new Appointment();
-                        tempAppointment.AppointmentPK = dbReader.GetInt32(0);
-                        tempAppointment.Title = dbReader.GetString(1);
-                        tempAppointment.Description = dbReader.GetString(2);
-                        tempAppointment.StartDate = dbReader.GetDateTime(3);
-                        tempAppointment.EndDate = dbReader.GetDateTime(4);
+                        tempAppointment.AppointmentPK = dbReader.GetInt32(i++);
+                        tempAppointment.Description = dbReader.GetString(i++);
+                        tempAppointment.StartDate = dbReader.GetDateTime(i++);
+                        tempAppointment.EndDate = dbReader.GetDateTime(i++);
+                        tempAppointment.FirstName = dbReader.GetString(i++);
+                        tempAppointment.LastName = dbReader.GetString(i++);
+                        tempAppointment.DateOfBirth = dbReader.GetDateTime(i++);
+                        tempAppointment.PhoneNumber = dbReader.GetString(i++);
+                        tempAppointment.Email = dbReader.GetString(i++);
+                        tempAppointment.ReferenceImagePath = dbReader.GetString(i++);
                         appointments.Add(tempAppointment);
                     }
                 }

@@ -1,0 +1,82 @@
+﻿
+@{
+    @*
+        for more info: https://fullcalendar.io/docs
+        for paypal: https://developer.paypal.com/docs/checkout/integrate/#7-go-live
+
+    *@
+    ViewData["Title"] = "Index";
+    List<Appointment> appointments = (List<Appointment>)ViewData["appointments"];
+    string eventsJson = (string)ViewData["eventsJson"];
+    string fullScheduleDaysJson = (string)ViewData["fullScheduleDaysJson"];
+}
+
+<h1 class="jumbotron">Schedule</h1>
+<div class="container">
+    <p class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
+        Click on any date that is available to reserve a meeting with the tattoo artist.
+    </p>
+    <p class="well cl-lg-12 cl-md-12 cl-sm-12 cl-xs-12">
+        ***TODO: add legend to calendar***
+    </p>
+</div>
+<div id='calendar'>
+</div>
+<script>
+    var events = @Html.Raw(eventsJson);
+    var morningString = 'T10:00:00';
+    var afternoonString = 'T15:00:00';
+    var businessDays = [0, 3, 4, 5, 6];
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    //checks if the array has a given value
+    function includes(array, value) {
+        if (!Array.isArray(array)) {
+            return false;
+        }
+        else {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] == value)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            themeSystem: 'bootstrap',
+            selectable: true,
+            dateClick: function (info) {
+                //more info on click event: https://fullcalendar.io/docs/dateClick
+                info.jsEvent.preventDefault();
+                //alert('Clicked on: ' + info.dateStr);
+                //alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+                //alert('Current view: ' + info.view.type);
+                // change the day's background color just for fun
+                //info.dayEl.style.backgroundColor = 'red';
+            },
+            events: events
+        });
+
+        calendar.render();
+    });
+
+</script>

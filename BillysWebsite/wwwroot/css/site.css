@@ -1,6 +1,24 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+/*To remove the up and down arrows from the
+    input[type=number] element
+*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*To remove the up and down arrows from the
+    input[type=number] element in mozilla
+*/
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 td.past {
     background-color: #ADAFAE;
 }

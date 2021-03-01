@@ -8,6 +8,10 @@ using BillysWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using NUnit.Framework;
+using Microsoft.AspNetCore.Http;
+using System.Web;
+using Contentful.Core.Models;
+using System.IO;
 
 namespace BillysWebsite.Controllers
 {
@@ -34,7 +38,10 @@ namespace BillysWebsite.Controllers
                     tempEvent.start = appointments[i].StartDate;
                     tempEvent.end = appointments[i].EndDate;
                     tempEvent.id = appointments[i].AppointmentPK;
-                    tempEvent.title = appointments[i].Title;
+                    //title should be the category type
+                    //we dont want to display the name to everyone 
+                    //that visits the web page
+                    tempEvent.title = appointments[i].FirstName;
                     tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointments[i].AppointmentPK});
                     if(i > 0)
                     {
@@ -71,51 +78,47 @@ namespace BillysWebsite.Controllers
         }
 
         [HttpPost]
-        public IActionResult MakeAppointment(string name, string description, TIME_OF_DAY timeOfDay, DateTime startDate)
+        public IActionResult MakeAppointment(IFormCollection collection)
         {
-            if(timeOfDay == TIME_OF_DAY.MORNING)
-            {
-                TimeSpan time = new TimeSpan(10, 0, 0);
-                startDate = startDate.Date + time;
-            }
-            else if(timeOfDay == TIME_OF_DAY.AFTERNOON)
-            {
-                TimeSpan time = new TimeSpan(15, 0, 0);
-                startDate = startDate.Date + time;
-            }
-            DateTime endDate = startDate.AddHours(4);
-            //Get appointments and check if appointment already exists
-            List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
-            if(appointments != null && appointments.Count > 0)
-            {
-                //We already have an appointment at that time 
-                //Return a failure message
-                ViewData["message"] = "An appointment at that time already exists.";
-            }
-            if(Functions.AddAppointent(name, description, startDate, endDate) == 1)
-            {
-                ViewData["message"] = "Appointment has been successfully created.";
-            }
-            else
-            {
-                ViewData["message"] = "Error: Could not create appointment.";
-            }
+            string firstName = collection["firstName"];
+            string lastName = collection["lastName"];
+            string dateOfBirth = collection["dateOfBirth"];
+            string phoneNumber = collection["phoneNumber"];
+            string email = collection["email"];
+            string description = collection["description"];
+            string licenseNumber = collection["licenseNumber"];
+            string imageReferenceUpload = collection["imageReferenceUpload"];
+            string timeOfDay = collection["timeOfDay"];
+            string startDate = collection["startDate"];
+            //FormFile files = 
+            //if (timeOfDay == TIME_OF_DAY.MORNING)
+            //{
+            //    TimeSpan time = new TimeSpan(10, 0, 0);
+            //    startDate = startDate.Date + time;
+            //}
+            //else if(timeOfDay == TIME_OF_DAY.AFTERNOON)
+            //{
+            //    TimeSpan time = new TimeSpan(15, 0, 0);
+            //    startDate = startDate.Date + time;
+            //}
+            //DateTime endDate = startDate.AddHours(4);
+            ////Get appointments and check if appointment already exists
+            //List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
+            //if(appointments != null && appointments.Count > 0)
+            //{
+            //    //We already have an appointment at that time 
+            //    //Return a failure message
+            //    ViewData["message"] = "An appointment at that time already exists.";
+            //}
+            //if(Functions.AddAppointent(firstName, description, startDate, endDate) == 1)
+            //{
+            //    ViewData["message"] = "Appointment has been successfully created.";
+            //}
+            //else
+            //{
+            //    ViewData["message"] = "Error: Could not create appointment.";
+            //}
             return RedirectToAction("Index", "ViewAppointment");
-        }
-
-        [HttpGet]
-        public IActionResult ViewAppointment(int id)
-        {
-            Appointment appointment = null;
-            {
-                List<Appointment> appointments = Functions.GetAppointments(id);
-                if (appointments != null && appointments.Count > 0)
-                    appointment = appointments[0];
-            }
-            if (appointment == null)
-                return View("Error");
-            ViewData["appointment"] = appointment;
-            return View();
         }
     }
 }
