@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "ViewAppointment";
     Appointment appointment = (Appointment)ViewData["appointment"];
+    string imagePath = (string)ViewData["imagePath"];
 }
 
 <div class="jumbotron">
@@ -14,10 +15,16 @@
             <small class="bg-primary">@appointment.StartDate.ToString("h:mm:ss tt")</small>
             to 
             <small class="bg-primary">@appointment.EndDate.ToString("h:mm:ss tt")</small>
+            <small>Email: @appointment.Email</small>
+            <small>Phone Number: @appointment.PhoneNumber</small>
+            <small>Date of birth: @appointment.DateOfBirth.ToString("ddd d MMM yyyy")</small>
         </h3>
         <h4>Description: 
             <small>@appointment.Description</small>
         </h4>
+        <div>
+            <img src="@imagePath" alt="@appointment.FileDescription" />
+        </div>
     </div>
 </div>
 
