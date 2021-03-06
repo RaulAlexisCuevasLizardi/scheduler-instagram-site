@@ -8,21 +8,35 @@ namespace BillysWebsite.Helpers
     public static class Functions
     {
         private static string useString = "USE [BillysWebsiteDB] ";
-        public static int AddAppointent(string name, string description, DateTime startDate, DateTime endDate)
+        public static int AddAppointent(string description, DateTime startDate, DateTime endDate,
+                                        string firstName, string lastName, DateTime dateOfBirth,
+                                        string phoneNumber, string email, string fileName, string fileDescription)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
             dbHelper.OpenConection();
             string query = useString +
-                            "INSERT INTO [dbo].[Appointment] " +
-                            "([Title] " +
-                            ",[Description] " +
+                            "INSERT INTO[dbo].[Appointment] " +
+                            "([Description] " +
                             ",[StartDate] " +
-                            ",[EndDate]) " +
+                            ",[EndDate] " +
+                            ",[FirstName] " +
+                            ",[LastName] " +
+                            ",[DateOfBirth] " +
+                            ",[PhoneNumber] " +
+                            ",[Email] " +
+                            ",[FileName] " +
+                            ",[FileDescription]) " +
                             "VALUES " +
-                            "('" + name + "' " +
-                            ",'" + description + "' " +
-                            ",'" + startDate + "' " +
-                            ",'" + endDate  + "')";
+                            "('" + description + "', " +
+                            "'" + startDate + "', " +
+                            "'" + endDate + "', " +
+                            "'" + firstName + "', " +
+                            "'" + lastName + "', " +
+                            "'" + dateOfBirth + "', " +
+                            "'" + phoneNumber + "', " +
+                            "'" + email + "', " +
+                            "'" + fileName + "', " +
+                            "'" + fileDescription + "')";
             int success = dbHelper.ExecuteQueries(query);
             dbHelper.CloseConnection();
             return success;
@@ -44,7 +58,8 @@ namespace BillysWebsite.Helpers
                             ",[DateOfBirth] " +
                             ",[PhoneNumber] " +
                             ",[Email] " +
-                            ",[ReferenceImagePath] " +
+                            ",[FileName]" +
+                            ",[FileDescription] " +
                             "FROM [dbo].[Appointment] ";
             if (appointmentPK != 0)
             {
@@ -104,7 +119,8 @@ namespace BillysWebsite.Helpers
                         tempAppointment.DateOfBirth = dbReader.GetDateTime(i++);
                         tempAppointment.PhoneNumber = dbReader.GetString(i++);
                         tempAppointment.Email = dbReader.GetString(i++);
-                        tempAppointment.ReferenceImagePath = dbReader.GetString(i++);
+                        tempAppointment.FileName = dbReader.GetString(i++);
+                        tempAppointment.FileDescription = dbReader.GetString(i++);
                         appointments.Add(tempAppointment);
                     }
                 }

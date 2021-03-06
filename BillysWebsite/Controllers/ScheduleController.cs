@@ -86,49 +86,72 @@ namespace BillysWebsite.Controllers
         [HttpPost]
         public IActionResult MakeAppointment(IFormCollection collection)
         {
+            TIME_OF_DAY timeOfDay;
             string firstName = collection["firstName"];
             string lastName = collection["lastName"];
-            string dateOfBirth = collection["dateOfBirth"];
+            string dateOfBirthString = collection["dateOfBirth"];
             string phoneNumber = collection["phoneNumber"];
             string email = collection["email"];
             string description = collection["description"];
             string licenseNumber = collection["licenseNumber"];
-            string imageReferenceUpload = collection["imageReferenceUpload"];
-            string timeOfDay = collection["timeOfDay"];
-            string startDate = collection["startDate"];
+            string timeOfDayString = collection["timeOfDay"];
+            string startDateString = collection["startDate"];
             IFormFile file = collection.Files.GetFile("imageReferenceUpload");
-            using (var fileStream = new FileStream(Path.Combine(_hostingEnvironment.WebRootPath + "/Uploads", file.FileName), FileMode.Create))
+            if (!DateTime.TryParse(dateOfBirthString, out DateTime dateOfBirth))
+            {
+                //return error message
+            }
+            if (!int.TryParse(timeOfDayString, out int timeOfDayInt))
+            {
+                //return error message
+            }
+            timeOfDay = (TIME_OF_DAY)timeOfDayInt;
+            if(!DateTime.TryParse(startDateString, out DateTime startDate))
+            {
+                //return error message
+            }
+            //getting filename extension
+            string fileExtension = "";
+            if(file.ContentType.Split('/').Length > 1)
+            {
+                fileExtension = file.ContentType.Split('/')[1];
+            }
+            //Saving image file to Uploads folder
+            string fileName = Guid.NewGuid().ToString() + "." + fileExtension;
+            string fileDescription = file.FileName;
+            using (var fileStream = new FileStream(Path.Combine(_hostingEnvironment.WebRootPath + "/Uploads", fileName), FileMode.Create))
             {
                 file.CopyToAsync(fileStream);
             }
 
-            //if (timeOfDay == TIME_OF_DAY.MORNING)
-            //{
-            //    TimeSpan time = new TimeSpan(10, 0, 0);
-            //    startDate = startDate.Date + time;
-            //}
-            //else if(timeOfDay == TIME_OF_DAY.AFTERNOON)
-            //{
-            //    TimeSpan time = new TimeSpan(15, 0, 0);
-            //    startDate = startDate.Date + time;
-            //}
-            //DateTime endDate = startDate.AddHours(4);
-            ////Get appointments and check if appointment already exists
-            //List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
-            //if(appointments != null && appointments.Count > 0)
-            //{
-            //    //We already have an appointment at that time 
-            //    //Return a failure message
-            //    ViewData["message"] = "An appointment at that time already exists.";
-            //}
-            //if(Functions.AddAppointent(firstName, description, startDate, endDate) == 1)
-            //{
-            //    ViewData["message"] = "Appointment has been successfully created.";
-            //}
-            //else
-            //{
-            //    ViewData["message"] = "Error: Could not create appointment.";
-            //}
+            if (timeOfDay == TIME_OF_DAY.MORNING)
+            {
+                TimeSpan time = new TimeSpan(10, 0, 0);
+                startDate = startDate.Date + time;
+            }
+            else if (timeOfDay == TIME_OF_DAY.AFTERNOON)
+            {
+                TimeSpan time = new TimeSpan(15, 0, 0);
+                startDate = startDate.Date + time;
+            }
+            DateTime endDate = startDate.AddHours(4);
+            //Get appointments and check if appointment already exists
+            List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
+            if (appointments != null && appointments.Count > 0)
+            {
+                //We already have an appointment at that time 
+                //Return a failure message
+                ViewData["message"] = "An appointment at that time already exists.";
+            }
+            if (Functions.AddAppointent(description, startDate, endDate, firstName, lastName,
+                                        dateOfBirth, phoneNumber, email, fileName, fileDescription) == 1)
+            {
+                ViewData["message"] = "Appointment has been successfully created.";
+            }
+            else
+            {
+                ViewData["message"] = "Error: Could not create appointment.";
+            }
             return RedirectToAction("Index", "ViewAppointment");
         }
     }

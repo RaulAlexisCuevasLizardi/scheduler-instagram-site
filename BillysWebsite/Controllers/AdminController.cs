@@ -8,11 +8,17 @@ using BillysWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using NUnit.Framework;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BillysWebsite.Controllers
 {
     public class AdminController : Controller
     {
+        private IWebHostEnvironment _hostingEnvironment;
+        public AdminController(IWebHostEnvironment environment)
+        {
+            _hostingEnvironment = environment;
+        }
         public IActionResult Index()
         {
             return View();
@@ -38,7 +44,7 @@ namespace BillysWebsite.Controllers
                     tempEvent.start = appointments[i].StartDate;
                     tempEvent.end = appointments[i].EndDate;
                     tempEvent.id = appointments[i].AppointmentPK;
-                    tempEvent.title = appointments[i].FirstName + appointments[i].LastName; 
+                    tempEvent.title = appointments[i].FirstName + " " + appointments[i].LastName; 
                     tempEvent.url = Url.Action("ViewAppointment", "Admin", new { id = appointments[i].AppointmentPK });
                     events.Add(tempEvent);
                 }
@@ -60,6 +66,7 @@ namespace BillysWebsite.Controllers
             }
             if (appointment == null)
                 return View("Error");
+            ViewData["imagePath"] = @"\Uploads\" + appointment.FileName;
             ViewData["appointment"] = appointment;
             return View();
         }
