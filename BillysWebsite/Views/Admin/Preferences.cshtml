@@ -12,6 +12,8 @@
             <th scope="col">Start time</th>
             <th scope="col">Days</th>
             <th scope="col">Duration</th>
+            <th scope="col">Color</th>
+            <th scope="col">Price</th>
             <th scope="col">Options</th>
         </tr>
         @if (appointmentTypes != null && appointmentTypes.Count > 0)
@@ -23,32 +25,18 @@
                     <td>@appointmentType.StartTime.ToString(@"hh\:mm\:ss")</td>
                     <td>@appointmentType.DaysOfWeek</td>
                     <td>@appointmentType.Duration</td>
+                    <td style="background-color:#@appointmentType.Color"></td>
+                    <td>@appointmentType.Price</td>
                     <td>@Html.ActionLink("Delete", "DeleteAppointmentType", null)</td>
                 </tr>
             }
         }
         else
         {
-            <tr colspan="5">
-                <td>No appointent types exist</td>
+            <tr>
+                <td colspan="7" class="text-center">No appointent types exist</td>
             </tr>
         }
-    <tr id="AddRow" style="display:none;">
-        <td><input id="Name" type="text" /></td>
-        <td><input id="StarTime" type="time" /></td>
-        <td>
-            <label>some label</label>
-            <ul>
-                <li><input type="checkbox"> checkbox 1</li>
-                <li><input type="checkbox"> checkbox 2</li>
-                <li><input type="checkbox"> checkbox 3</li>
-                <li><input type="checkbox"> checkbox 4</li>
-            </ul>
-        </td>
-        <td>
-            <input id="duration" type="number"/>
-        </td>
-    </tr>
     </table>
     <div class="float-right">
         @Html.ActionLink("Add", "AddAppointmentType", "Admin", null, new { @class = "btn btn-primary btn-lg" })

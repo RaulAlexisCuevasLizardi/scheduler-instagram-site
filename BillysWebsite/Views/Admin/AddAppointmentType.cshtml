@@ -14,20 +14,100 @@
         @using (Html.BeginForm("AddAppointmentType", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="form-row mb-4">
-                <label for="Name">Name:</label>
-                <input type="text" class="form-control" id="Name" name="Name" required
-                       autocomplete="on" autofocus minlength="2" maxlength="20"
-                       pattern="[a-zA-Z]+" title="Name">
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                    <label for="Name">Name:</label>
+                    <input type="text" class="form-control" id="Name" name="Name" required
+                           autocomplete="on" autofocus minlength="2" maxlength="20"
+                           pattern="[a-zA-Z0-9]+" title="Name">
+                    <small id="NameHelpBox" class="form-text text-muted">
+                        Alphanumeric name of the session.
+                    </small>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                    <label for="StartTime">Start Time:</label>
+                    <input type="time" class="form-control" id="StartTime" name="StartTime"
+                           required min="00:00" max="24:00" title="Start time">
+                    <small id="StartTimeHelpBox" class="form-text text-muted">
+                        Time the session will start on.
+                    </small>
+                </div>
             </div>
             <div class="form-row mb-4">
-                <label for="StartTime">Start Time:</label>
-                <input type="time" class="form-control" id="StartTime" name="StartTime"
-                       required min="00:00" max="24:00" title="Start time">
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+                    <label for="Duration">Duration:</label>
+                    <input type="number" class="form-control" id="Duration" name="Duration"
+                           required min="1" max="999" step="1" value="1" title="Duration">
+                    <small id="DurationHelpBox" class="form-text text-muted">
+                        Duration of the session.
+                    </small>
+                    <div class="form-check-inline">
+                        <input id="HourCheck" type="radio" checked="checked" class="form-check-input" name="DurationType" value="0" required>
+                        <label class="form-check-label" for="HourCheck">Hr</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input id="MinCheck" type="radio" class="form-check-input" name="DurationType" value="1" required>
+                        <label class="form-check-label" for="MinCheck">Min</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                    <label for="EventColor">Color of event:</label>
+                    <input type="color" class="form-control form-control-color" id="EventColor"
+                           name="EventColor" title="Color of event" value="#1b6ec2" required>
+                    <small id="EventColorHelpBox" class="form-text text-muted">
+                        Color of the event in calendar.
+                    </small>
+                </div>
             </div>
             <div class="form-row mb-4">
-                <label for="StartTime">Start Time:</label>
-                <input type="time" class="form-control" id="StartTime" name="StartTime"
-                       required min="00:00" max="24:00" title="Start time">
+                <div class="col-lg-6 col-md-6 col-sm-6 mb-3">
+                    <label for="Price">Price:</label>
+                    <input type="number" class="form-control form-control" id="Price"
+                           name="Price" title="Price of appointment" value="1.00" step="0.01" required>
+                    <small id="PriceHelpBox" class="form-text text-muted">
+                        Price of the appointment.
+                    </small>
+                </div>
+            </div>
+            <label>Days (Pick at least one):</label>
+            <div class="form-row mb-4">
+                <div class="form-check-inline">
+                    <input id="Sunday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Sunday" value="1">
+                    <label class="form-check-label" for="Sunday">Sun</label>
+                </div>
+                <div class="form-check-inline ml-4">
+                    <input id="Monday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Monday" value="2">
+                    <label class="form-check-label" for="Monday">Mon</label>
+                </div>
+                <div class="form-check-inline ml-4">
+                    <input id="Tuesday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Tuesday" value="4">
+                    <label class="form-check-label" for="Tuesday">Tue</label>
+                </div>
+                <div class="form-check-inline ml-4">
+                    <input id="Wednesday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Wednesday" value="8">
+                    <label class="form-check-label" for="Wednesday">Wed</label>
+                </div>
+            </div>
+            <div class="form-row mb-4">
+                <div class="form-check-inline">
+                    <input id="Thursday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Thursday" value="16">
+                    <label class="form-check-label" for="Thursday">Thu</label>
+                </div>
+                <div class="form-check-inline ml-4">
+                    <input id="Friday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Friday" value="32">
+                    <label class="form-check-label" for="Friday">Fri</label>
+                </div>
+                <div class="form-check-inline ml-4">
+                    <input id="Saturday" type="checkbox" class="form-check-input" name="daysOfWeek" title="Saturday" value="64">
+                    <label class="form-check-label" for="Saturday">Sat</label>
+                </div>
+                <small id="DurationHelpBox" class="form-text text-muted">
+                    Days of the week the session will be available.
+                </small>
+            </div>
+            <div class="form-row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <button type="submit" id="btnSubmit" class="btn btn btn-primary float-right">Create</button>
+                </div>
             </div>
         }
     </div>

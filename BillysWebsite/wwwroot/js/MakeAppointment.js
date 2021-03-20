@@ -11,6 +11,8 @@
     }
 }
 
-$("#imageReferenceUpload").change(function () {
-    readURL(this);
+$(document).ready(function () {
+    $("#imageReferenceUpload").change(function () {
+        readURL(this);
+    });
 });

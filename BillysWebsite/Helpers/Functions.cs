@@ -68,6 +68,8 @@ namespace BillysWebsite.Helpers
                         tempAppointmentType.StartTime = dbReader.GetTimeSpan(i++);
                         tempAppointmentType.DaysOfWeek = dbReader.GetByte(i++);
                         tempAppointmentType.Duration = dbReader.GetDecimal(i++);
+                        tempAppointmentType.Color = dbReader.GetString(i++);
+                        tempAppointmentType.Price = dbReader.GetDecimal(i++);
                         appointmentTypes.Add(tempAppointmentType);
                     }
                 }

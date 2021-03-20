@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using NUnit.Framework;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace BillysWebsite.Controllers
 {
@@ -74,8 +75,16 @@ namespace BillysWebsite.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddAppointmentType()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddAppointmentType(IFormCollection collection)
+        {
+            string daysOfWeek = collection["daysOfWeek"];
             return View();
         }
     }

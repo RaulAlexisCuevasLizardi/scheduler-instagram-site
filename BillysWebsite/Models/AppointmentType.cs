@@ -9,5 +9,7 @@ namespace BillysWebsite.Models
         public TimeSpan StartTime { get; set; }
         public byte DaysOfWeek { get; set; }
         public Decimal Duration { get; set; }
+        public string Color { get; set; }
+        public Decimal Price { get; set; }
     }
 }
