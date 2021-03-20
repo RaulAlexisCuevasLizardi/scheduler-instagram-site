@@ -73,5 +73,10 @@ namespace BillysWebsite.Controllers
             ViewData["appointment"] = appointment;
             return View();
         }
+
+        public IActionResult AddAppointmentType()
+        {
+            return View();
+        }
     }
 }
