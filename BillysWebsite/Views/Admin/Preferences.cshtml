@@ -2,4 +2,17 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    List<AppointmentType> appointmentTypes = (List<AppointmentType>)ViewData["appointmentTypes"];
 }
+
+<div class="container">
+    @foreach (var appointmentType in appointmentTypes)
+    {
+    <div class="row">
+        <div class="cl-lg-3 cl-md-3 cl-sm-3 cl-xs-3">@appointmentType.Name</div>
+        <div class="cl-lg-3 cl-md-3 cl-sm-3 cl-xs-3">@appointmentType.StartTime.ToString(@"hh\:mm\:ss")</div>
+        <div class="cl-lg-3 cl-md-3 cl-sm-3 cl-xs-3">@appointmentType.DaysOfWeek</div>
+        <div class="cl-lg-3 cl-md-3 cl-sm-3 cl-xs-3">@appointmentType.Duration</div>
+    </div>
+    }
+</div>

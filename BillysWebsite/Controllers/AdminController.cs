@@ -26,6 +26,9 @@ namespace BillysWebsite.Controllers
 
         public IActionResult Preferences()
         {
+            List<AppointmentType> appointmentTypes = null;
+            appointmentTypes = Functions.GetAppointmentTypes();
+            ViewData["appointmentTypes"] = appointmentTypes;
             return View();
         }
 

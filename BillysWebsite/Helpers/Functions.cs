@@ -42,6 +42,40 @@ namespace BillysWebsite.Helpers
             return success;
         }
 
+        public static List<AppointmentType> GetAppointmentTypes()
+        {
+            DatabaseHelper dbHelper = new DatabaseHelper();
+            dbHelper.OpenConection();
+            List<AppointmentType> appointmentTypes = null;
+            string query = "SELECT [Id] " +
+                           ",[Name] " +
+                           ",[StartTime] " +
+                           ",[DaysOfWeek] " +
+                           ",[Duration] " +
+                           "FROM[dbo].[AppointmentType]";
+            using (SqlDataReader dbReader = dbHelper.DataReader(query))
+            {
+                while (dbReader.Read())
+                {
+                    if (dbReader.HasRows)
+                    {
+                        int i = 0;
+                        if (appointmentTypes == null)
+                            appointmentTypes = new List<AppointmentType>();
+                        AppointmentType tempAppointmentType = new AppointmentType();
+                        tempAppointmentType.Id = dbReader.GetInt32(i++);
+                        tempAppointmentType.Name = dbReader.GetString(i++);
+                        tempAppointmentType.StartTime = dbReader.GetTimeSpan(i++);
+                        tempAppointmentType.DaysOfWeek = dbReader.GetByte(i++);
+                        tempAppointmentType.Duration = dbReader.GetDecimal(i++);
+                        appointmentTypes.Add(tempAppointmentType);
+                    }
+                }
+            }
+            dbHelper.CloseConnection();
+            return appointmentTypes;
+        }
+
         public static List<Appointment> GetAppointments(int appointmentPK = 0, DateTime? startDate = null, DateTime? endDate = null)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
