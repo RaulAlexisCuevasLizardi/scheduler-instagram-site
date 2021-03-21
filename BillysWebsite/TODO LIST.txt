@@ -19,10 +19,11 @@ license number and email to the database *DONE*
 10) Add form of displaying the session data in the MakeAppointment
 page clearer (maybe store the data in the option and then display
 it nearby using jquery)
-11) Add appointment type to the MakeAppointment submit function
-12) Add a foreign key relation to database between Appointments and appointmenttype
+11) Add appointment type to the MakeAppointment submit function *DONE*
+12) Add a foreign key relation to database between Appointments and appointmenttype *DONE*
 13) Add a "deleted" column to appointmenttype to save "deleted" appointmenttypes that
 shouldnt be shown
+14) In MakeAppointment form, show only the appointmentTypes available for the chosen date 
 
 Comments from billy:
 - I think q las consultas serian de 9 a 10 

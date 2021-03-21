@@ -47,9 +47,9 @@ namespace BillysWebsite.Controllers
                     tempEvent.allDay = false;
                     tempEvent.start = appointments[i].StartDate;
                     tempEvent.end = appointments[i].EndDate;
-                    tempEvent.id = appointments[i].AppointmentPK;
+                    tempEvent.id = appointments[i].Id;
                     tempEvent.title = appointments[i].FirstName + " " + appointments[i].LastName; 
-                    tempEvent.url = Url.Action("ViewAppointment", "Admin", new { id = appointments[i].AppointmentPK });
+                    tempEvent.url = Url.Action("ViewAppointment", "Admin", new { id = appointments[i].Id });
                     events.Add(tempEvent);
                 }
             }

@@ -25,7 +25,7 @@
                 decimal price = Math.Round(appointmentType.Price, 2);
     <tr>
         <td>@appointmentType.Name</td>
-        <td>@appointmentType.StartTime.ToString(@"hh\:mm\:ss")</td>
+        <td>@appointmentType.StartTime.ToString(@"hh\:mm")</td>
         <td>@appointmentType.DaysOfWeek</td>
         @if (appointmentType.DurationType == AppointmentType.DURATION_TYPE.HOURS)
         {

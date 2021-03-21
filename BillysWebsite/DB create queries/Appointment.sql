@@ -1,0 +1,17 @@
+USE BillysWebsiteDB
+CREATE TABLE Appointment(
+	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[Description] VARCHAR(MAX) NOT NULL,
+	StartDate DATETIME NOT NULL,
+	EndDate DATETIME NOT NULL,
+	FirstName VARCHAR(MAX) NOT NULL,
+	LastName VARCHAR(MAX) NOT NULL,
+	DateOfBirth DATE NOT NULL,
+	PhoneNumber VARCHAR(MAX) NOT NULL,
+	Email VARCHAR(MAX) NOT NULL,
+	[FileName] varchar(max) NOT NULL,
+	FileDescription VARCHAR(MAX) NOT NULL,
+	TypeId INT NOT NULL,
+	CONSTRAINT FK_AppointmentTypeId FOREIGN KEY(TypeId)
+	REFERENCES AppointmentType(Id)
+)

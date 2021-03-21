@@ -11,7 +11,8 @@ namespace BillysWebsite.Helpers
         private static string useString = "USE [BillysWebsiteDB] ";
         public static int AddAppointent(string description, DateTime startDate, DateTime endDate,
                                         string firstName, string lastName, DateTime dateOfBirth,
-                                        string phoneNumber, string email, string fileName, string fileDescription)
+                                        string phoneNumber, string email, string fileName,
+                                        string fileDescription, int typeId)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
             dbHelper.OpenConection();
@@ -26,7 +27,8 @@ namespace BillysWebsite.Helpers
                             ",[PhoneNumber] " +
                             ",[Email] " +
                             ",[FileName] " +
-                            ",[FileDescription]) " +
+                            ",[FileDescription]" +
+                            ",[TypeId]) " +
                             "VALUES " +
                             "('" + description + "', " +
                             "'" + startDate + "', " +
@@ -37,17 +39,19 @@ namespace BillysWebsite.Helpers
                             "'" + phoneNumber + "', " +
                             "'" + email + "', " +
                             "'" + fileName + "', " +
-                            "'" + fileDescription + "')";
+                            "'" + fileDescription + "'," +
+                            "" + typeId + ")";
             int success = dbHelper.ExecuteQueries(query);
             dbHelper.CloseConnection();
             return success;
         }
 
-        public static List<AppointmentType> GetAppointmentTypes()
+        public static List<AppointmentType> GetAppointmentTypes(int Id = 0)
         {
             DatabaseHelper dbHelper = new DatabaseHelper();
             dbHelper.OpenConection();
             List<AppointmentType> appointmentTypes = null;
+            string whereString = null;
             string query = "SELECT [Id] " +
                            ",[Name] " +
                            ",[StartTime] " +
@@ -57,6 +61,20 @@ namespace BillysWebsite.Helpers
                            ",[DurationType] " +
                            ",[Duration] " +
                            "FROM[dbo].[AppointmentType]";
+            if (Id != 0)
+            {
+                if (whereString == null)
+                {
+                    whereString = "WHERE ";
+                }
+                else
+                {
+                    whereString += "AND ";
+                }
+                whereString += "Id = " + Id + " ";
+            }
+            if (whereString != null)
+                query += whereString;
             using (SqlDataReader dbReader = dbHelper.DataReader(query))
             {
                 while (dbReader.Read())
@@ -90,7 +108,7 @@ namespace BillysWebsite.Helpers
             List<Appointment> appointments = null;
             string whereString = null;
             string query = useString +
-                            "SELECT[AppointmentPK] " +
+                            "SELECT A.[Id] " +
                             ",[Description] " +
                             ",[StartDate] " +
                             ",[EndDate] " +
@@ -99,9 +117,18 @@ namespace BillysWebsite.Helpers
                             ",[DateOfBirth] " +
                             ",[PhoneNumber] " +
                             ",[Email] " +
-                            ",[FileName]" +
+                            ",[FileName] " +
                             ",[FileDescription] " +
-                            "FROM [dbo].[Appointment] ";
+                            ",A.[TypeId] " +
+                            ",AType.[Name] " +
+                            ",AType.[StartTime] " +
+                            ",AType.[DaysOfWeek] " +
+                            ",AType.[Color] " +
+                            ",AType.[Price] " +
+                            ",AType.[DurationType] " +
+                            ",AType.[Duration] " +
+                            "FROM[BillysWebsiteDB].[dbo].[Appointment] A " +
+                            "LEFT JOIN AppointmentType AType ON A.TypeId = AType.Id ";
             if (appointmentPK != 0)
             {
                 if (whereString == null)
@@ -112,7 +139,7 @@ namespace BillysWebsite.Helpers
                 {
                     whereString += "AND ";
                 }
-                whereString += "AppointmentPK = " + appointmentPK + " ";
+                whereString += "Id = " + appointmentPK + " ";
             }
             if(startDate != null)
             {
@@ -151,7 +178,7 @@ namespace BillysWebsite.Helpers
                         if (appointments == null)
                             appointments = new List<Appointment>();
                         Appointment tempAppointment = new Appointment();
-                        tempAppointment.AppointmentPK = dbReader.GetInt32(i++);
+                        tempAppointment.Id = dbReader.GetInt32(i++);
                         tempAppointment.Description = dbReader.GetString(i++);
                         tempAppointment.StartDate = dbReader.GetDateTime(i++);
                         tempAppointment.EndDate = dbReader.GetDateTime(i++);
@@ -162,6 +189,16 @@ namespace BillysWebsite.Helpers
                         tempAppointment.Email = dbReader.GetString(i++);
                         tempAppointment.FileName = dbReader.GetString(i++);
                         tempAppointment.FileDescription = dbReader.GetString(i++);
+                        //Apointment Type
+                        tempAppointment.AppointmentType = new AppointmentType();
+                        tempAppointment.AppointmentType.Id = dbReader.GetInt32(i++);
+                        tempAppointment.AppointmentType.Name = dbReader.GetString(i++);
+                        tempAppointment.AppointmentType.StartTime = dbReader.GetTimeSpan(i++);
+                        tempAppointment.AppointmentType.DaysOfWeek = dbReader.GetByte(i++);
+                        dbReader.GetChars(i++, 0, tempAppointment.AppointmentType.Color, 0, 6);
+                        tempAppointment.AppointmentType.Price = dbReader.GetDecimal(i++);
+                        tempAppointment.AppointmentType.DurationType = dbReader.GetBoolean(i++) ? DURATION_TYPE.HOURS : DURATION_TYPE.MINUTES;
+                        tempAppointment.AppointmentType.Duration = dbReader.GetInt32(i++);
                         appointments.Add(tempAppointment);
                     }
                 }

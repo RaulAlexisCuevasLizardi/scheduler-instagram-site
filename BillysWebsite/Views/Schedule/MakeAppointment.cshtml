@@ -90,16 +90,17 @@
                         <option disabled="disabled" selected="selected" value="">Choose one</option>
                         @foreach (var appointmentType in appointmentTypes)
                         {
-                            if (appointmentType.Price > 0)
-                            {
-                                <option value="@appointmentType.Id">@appointmentType.Name Duration: @appointmentType.Duration $@Math.Round(appointmentType.Price, 2)</option>
-                            }
-                            else
-                            {
-                                <option value="@appointmentType.Id">@appointmentType.Name Duration: @appointmentType.Duration FREE</option>
-                            }
+                            <option value="@appointmentType.Id" data-durationtype="@appointmentType.DurationType"
+                                    data-duration="@appointmentType.Duration" data-price="@appointmentType.Price"
+                                    data-starttime="@appointmentType.StartTime.ToString(@"hh\:mm")">@appointmentType.Name</option>
                         }
                     </select>
+                </div>
+                <div id="AppointmentTypeInformation" class="col-lg-3 col-md-3 col-sm-3 mb-4" style="display:none;">
+                    <p>Appointment type information:</p>
+                    <p id="StartTime"></p>
+                    <p id="Duration"></p>
+                    <p id="Price"></p>
                 </div>
             </div>
             <div class="form-row">

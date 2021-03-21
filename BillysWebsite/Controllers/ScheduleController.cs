@@ -43,12 +43,12 @@ namespace BillysWebsite.Controllers
                     tempEvent.allDay = false;
                     tempEvent.start = appointments[i].StartDate;
                     tempEvent.end = appointments[i].EndDate;
-                    tempEvent.id = appointments[i].AppointmentPK;
+                    tempEvent.id = appointments[i].Id;
                     //title should be the category type
                     //we dont want to display the name to everyone 
                     //that visits the web page
                     tempEvent.title = appointments[i].FirstName;
-                    tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointments[i].AppointmentPK});
+                    tempEvent.url = Url.Action("ViewAppointment", "Schedule", new { id = appointments[i].Id});
                     if(i > 0)
                     {
                         DateTime tomorrowDate = DateTime.Today.AddDays(1);
@@ -98,6 +98,7 @@ namespace BillysWebsite.Controllers
             string licenseNumber = collection["licenseNumber"];
             string timeOfDayString = collection["timeOfDay"];
             string startDateString = collection["startDate"];
+            string appointmentTypeString = collection["AppointmentType"];
             IFormFile file = collection.Files.GetFile("imageReferenceUpload");
             if (!DateTime.TryParse(dateOfBirthString, out DateTime dateOfBirth))
             {
@@ -123,20 +124,43 @@ namespace BillysWebsite.Controllers
             string fileDescription = file.FileName;
             using (var fileStream = new FileStream(Path.Combine(_hostingEnvironment.WebRootPath + "/Uploads", fileName), FileMode.Create))
             {
-                file.CopyToAsync(fileStream);
+                file.CopyTo(fileStream);
             }
 
-            if (timeOfDay == TIME_OF_DAY.MORNING)
+            if (!int.TryParse(appointmentTypeString, out int appointmentTypeId))
             {
-                TimeSpan time = new TimeSpan(10, 0, 0);
-                startDate = startDate.Date + time;
+                //return error message
             }
-            else if (timeOfDay == TIME_OF_DAY.AFTERNOON)
+
+            AppointmentType appointmentType = null;
             {
-                TimeSpan time = new TimeSpan(15, 0, 0);
-                startDate = startDate.Date + time;
+                List<AppointmentType> appointmentTypes = Functions.GetAppointmentTypes(appointmentTypeId);
+                if (appointmentTypes != null && appointmentTypes.Count > 0)
+                    appointmentType = appointmentTypes[0];
             }
-            DateTime endDate = startDate.AddHours(4);
+
+            startDate += appointmentType.StartTime;
+            DateTime endDate;
+            if (appointmentType.DurationType == AppointmentType.DURATION_TYPE.HOURS)
+            {
+                endDate = startDate.AddHours(appointmentType.Duration);
+            }
+            else
+            {
+                endDate = startDate.AddMinutes(appointmentType.Duration);
+            }
+
+            //if (timeOfDay == TIME_OF_DAY.MORNING)
+            //{
+            //    TimeSpan time = new TimeSpan(10, 0, 0);
+            //    startDate = startDate.Date + time;
+            //}
+            //else if (timeOfDay == TIME_OF_DAY.AFTERNOON)
+            //{
+            //    TimeSpan time = new TimeSpan(15, 0, 0);
+            //    startDate = startDate.Date + time;
+            //}
+            //DateTime tempendDate = startDate.AddHours(4);
             //Get appointments and check if appointment already exists
             List<Appointment> appointments = Functions.GetAppointments(0, startDate, endDate);
             if (appointments != null && appointments.Count > 0)
@@ -146,7 +170,8 @@ namespace BillysWebsite.Controllers
                 ViewData["message"] = "An appointment at that time already exists.";
             }
             if (Functions.AddAppointent(description, startDate, endDate, firstName, lastName,
-                                        dateOfBirth, phoneNumber, email, fileName, fileDescription) == 1)
+                                        dateOfBirth, phoneNumber, email, fileName, fileDescription,
+                                        appointmentType.Id) == 1)
             {
                 ViewData["message"] = "Appointment has been successfully created.";
             }
