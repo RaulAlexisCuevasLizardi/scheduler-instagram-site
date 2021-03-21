@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using BillysWebsite.Models
 @{
     List<AppointmentType> appointmentTypes = (List<AppointmentType>)ViewData["appointmentTypes"];
 }
@@ -20,15 +21,31 @@
         {
             foreach (var appointmentType in appointmentTypes)
             {
-                <tr>
-                    <td>@appointmentType.Name</td>
-                    <td>@appointmentType.StartTime.ToString(@"hh\:mm\:ss")</td>
-                    <td>@appointmentType.DaysOfWeek</td>
-                    <td>@appointmentType.Duration</td>
-                    <td style="background-color:#@appointmentType.Color"></td>
-                    <td>@appointmentType.Price</td>
-                    <td>@Html.ActionLink("Delete", "DeleteAppointmentType", null)</td>
-                </tr>
+                string color = new string(appointmentType.Color);
+                decimal price = Math.Round(appointmentType.Price, 2);
+    <tr>
+        <td>@appointmentType.Name</td>
+        <td>@appointmentType.StartTime.ToString(@"hh\:mm\:ss")</td>
+        <td>@appointmentType.DaysOfWeek</td>
+        @if (appointmentType.DurationType == AppointmentType.DURATION_TYPE.HOURS)
+        {
+            <td>@appointmentType.Duration Hours</td>
+        }
+        else
+        {
+            <td>@appointmentType.Duration Minutes</td>
+        }
+        <td style="background-color:#@color"></td>
+        @if (price == 0)
+        {
+            <td>FREE</td>
+        }
+        else
+        {
+            <td>@price</td>
+        }
+        <td>@Html.ActionLink("Delete", "DeleteAppointmentType", null)</td>
+    </tr>
             }
         }
         else

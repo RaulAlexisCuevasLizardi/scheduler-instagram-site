@@ -79,6 +79,8 @@ namespace BillysWebsite.Controllers
         [HttpGet]
         public IActionResult MakeAppointment(DateTime date)
         {
+            List<AppointmentType> appointmentTypes = Functions.GetAppointmentTypes();
+            ViewData["appointmentTypes"] = appointmentTypes;
             ViewData["date"] = date;
             return View();
         }

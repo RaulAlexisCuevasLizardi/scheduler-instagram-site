@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using static BillysWebsite.Models.AppointmentType;
 
 namespace BillysWebsite.Helpers
 {
@@ -51,6 +52,9 @@ namespace BillysWebsite.Helpers
                            ",[Name] " +
                            ",[StartTime] " +
                            ",[DaysOfWeek] " +
+                           ",[Color] " +
+                           ",[Price] " +
+                           ",[DurationType] " +
                            ",[Duration] " +
                            "FROM[dbo].[AppointmentType]";
             using (SqlDataReader dbReader = dbHelper.DataReader(query))
@@ -67,9 +71,10 @@ namespace BillysWebsite.Helpers
                         tempAppointmentType.Name = dbReader.GetString(i++);
                         tempAppointmentType.StartTime = dbReader.GetTimeSpan(i++);
                         tempAppointmentType.DaysOfWeek = dbReader.GetByte(i++);
-                        tempAppointmentType.Duration = dbReader.GetDecimal(i++);
-                        tempAppointmentType.Color = dbReader.GetString(i++);
+                        dbReader.GetChars(i++, 0, tempAppointmentType.Color, 0, 6);
                         tempAppointmentType.Price = dbReader.GetDecimal(i++);
+                        tempAppointmentType.DurationType = dbReader.GetBoolean(i++) ? DURATION_TYPE.HOURS : DURATION_TYPE.MINUTES;
+                        tempAppointmentType.Duration = dbReader.GetInt32(i++);
                         appointmentTypes.Add(tempAppointmentType);
                     }
                 }
@@ -163,6 +168,34 @@ namespace BillysWebsite.Helpers
             }
             dbHelper.CloseConnection();
             return appointments;
+        }
+
+        public static int AddAppointmentType(string name, TimeSpan startTime, int daysOfWeek,
+                                              string color, decimal price,
+                                              int durationType, int duration)
+        {
+            DatabaseHelper dbHelper = new DatabaseHelper();
+            dbHelper.OpenConection();
+            string query = useString +
+                            "INSERT INTO[dbo].[AppointmentType] " +
+                            "([Name] " +
+                            ",[StartTime] " +
+                            ",[DaysOfWeek] " +
+                            ",[Color] " +
+                            ",[Price] " +
+                            ",[DurationType] " +
+                            ",[Duration]) " +
+                            "VALUES " +
+                            "('" + name + "' " +
+                            ",'" + startTime.ToString(@"hh\:mm\:ss") + "' " +
+                            "," + daysOfWeek +" " +
+                            ",'" + color +"' " +
+                            "," + price +" " +
+                            "," + durationType +" " +
+                            "," + duration +")";
+            int success = dbHelper.ExecuteQueries(query);
+            dbHelper.CloseConnection();
+            return success;
         }
 
         internal static bool DeleteOldAppointments()

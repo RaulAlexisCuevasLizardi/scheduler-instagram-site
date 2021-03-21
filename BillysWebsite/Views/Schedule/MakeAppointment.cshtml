@@ -6,6 +6,7 @@
     string minValidDateString = minValidDate.ToString("yyyy-MM-dd");
     DateTime date = (DateTime)ViewData["date"];
     ViewData["Title"] = "AddAppointment";
+    List<AppointmentType> appointmentTypes = (List<AppointmentType>)ViewData["appointmentTypes"];
 }
 
 <div class="jumbotron">
@@ -83,13 +84,22 @@
             </div>
             <!--Checkboxes and submit button-->
             <div class="form-row mb-4">
-                <div class="form-check">
-                    <input id="morningCheck" type="radio" class="form-check-input" name="timeOfDay" value="0" required>
-                    <label class="form-check-label" for="morningCheck">10:00AM</label>
-                </div>
-                <div class="form-check ml-4">
-                    <input id="afternoonCheck" type="radio" class="form-check-input" name="timeOfDay" value="1" required>
-                    <label class="form-check-label" for="afternoonCheck">3:00PM</label>
+                <div class="col-lg-3 col-md-3 col-sm-3 mb-4">
+                    <label for="AppointmentType">Appointment type:</label>
+                    <select id="AppointmentType" class="form-control" name="AppointmentType" title="Appointment type" required>
+                        <option disabled="disabled" selected="selected" value="">Choose one</option>
+                        @foreach (var appointmentType in appointmentTypes)
+                        {
+                            if (appointmentType.Price > 0)
+                            {
+                                <option value="@appointmentType.Id">@appointmentType.Name Duration: @appointmentType.Duration $@Math.Round(appointmentType.Price, 2)</option>
+                            }
+                            else
+                            {
+                                <option value="@appointmentType.Id">@appointmentType.Name Duration: @appointmentType.Duration FREE</option>
+                            }
+                        }
+                    </select>
                 </div>
             </div>
             <div class="form-row">

@@ -84,8 +84,95 @@ namespace BillysWebsite.Controllers
         [HttpPost]
         public IActionResult AddAppointmentType(IFormCollection collection)
         {
-            string daysOfWeek = collection["daysOfWeek"];
-            return View();
+            string name = collection["name"];
+            string startTimeString = collection["StartTime"]; //16:20
+            string durationString = collection["Duration"]; //1
+            string durationType = collection["DurationType"]; //0
+            string eventColor = collection["EventColor"]; //#1b6ec2
+            string priceString = collection["Price"]; //1.00
+            string daysOfWeek = collection["daysOfWeek"]; //2,4,8,16,32
+            string[] startTimeComponents = null;
+            if (!string.IsNullOrEmpty(startTimeString))
+            {
+                startTimeComponents = startTimeString.Split(':');
+            }
+            else
+            {
+                //return error
+            }
+            string startTimeHourString = null;
+            string startTimeMinuteString = null;
+            if(startTimeComponents.Length > 0)
+            {
+                startTimeHourString = startTimeComponents[0];
+            }
+            if (startTimeComponents.Length > 1)
+            {
+                startTimeMinuteString = startTimeComponents[1];
+            }
+            if(!int.TryParse(startTimeHourString, out int startTimeHourInt))
+            {
+                //return error
+            }
+            if (!int.TryParse(startTimeMinuteString, out int startTimeMinuteInt))
+            {
+                //return error
+            }
+            TimeSpan startTime = new TimeSpan(startTimeHourInt, startTimeMinuteInt, 0);
+            if (!int.TryParse(durationString, out int durationInt))
+            {
+                //return error
+            }
+            if (!int.TryParse(durationType, out int durationTypeInt))
+            {
+                //return error
+            }
+            if(!string.IsNullOrEmpty(eventColor) && eventColor[0] == '#')
+            {
+                eventColor = eventColor.Trim('#');
+            }
+            else
+            {
+                //return error
+            }
+            if (!Decimal.TryParse(priceString, out Decimal priceDecimal))
+            {
+                //return error
+            }
+            int daysOfWeekMask = 0;
+            if(!string.IsNullOrEmpty(daysOfWeek) && daysOfWeek.Contains(','))
+            {
+                //split daysOfWeek by its commas and add all of the values
+                string[] daysOfWeekComponents = daysOfWeek.Split(',');
+                foreach (var dayOfWeek in daysOfWeekComponents)
+                {
+                    if (!int.TryParse(dayOfWeek, out int dayOfWeekInt))
+                    {
+                        //return error
+                    }
+                    daysOfWeekMask += dayOfWeekInt;
+                }
+            }
+            else if (true)
+            {
+                if (!int.TryParse(daysOfWeek, out int dayOfWeekInt))
+                {
+                    //return error
+                }
+                daysOfWeekMask += dayOfWeekInt;
+            }
+            else
+            {
+                //return error
+            }
+            int success = Functions.AddAppointmentType(name, startTime, daysOfWeekMask,
+                                         eventColor, priceDecimal, durationTypeInt,
+                                         durationInt);
+            if(success <= 0)
+            {
+                //return error
+            }
+            return RedirectToAction("AddAppointmentType");
         }
     }
 }

@@ -13,9 +13,16 @@ and session) for the Make Appointment form
 6) Add birth date, last name, phone number,
 license number and email to the Make Appointment form *DONE*
 7) Add birth date, last name, phone number,
-license number and email to the database 
+license number and email to the database *DONE*
 8) Add legend to calendar
-9) Add picture upload for the Make Appointment form
+9) Add picture upload for the Make Appointment form *DONE*
+10) Add form of displaying the session data in the MakeAppointment
+page clearer (maybe store the data in the option and then display
+it nearby using jquery)
+11) Add appointment type to the MakeAppointment submit function
+12) Add a foreign key relation to database between Appointments and appointmenttype
+13) Add a "deleted" column to appointmenttype to save "deleted" appointmenttypes that
+shouldnt be shown
 
 Comments from billy:
 - I think q las consultas serian de 9 a 10 
